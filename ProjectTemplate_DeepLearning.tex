@@ -1,0 +1,236 @@
+\documentclass[conference]{IEEEtran}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{cite}
+\usepackage{hyperref}
+
+\begin{document}
+
+\title{A Practical Hybrid Diffusion--GAN Approach to Image Super-Resolution on CPU}
+
+\author{
+\IEEEauthorblockN{Saad Muslih Almuwallad}
+\IEEEauthorblockA{Student ID: g202415440 \\ King Fahd University of Petroleum and Minerals \\ Dhahran, Saudi Arabia}
+\and
+\IEEEauthorblockN{Supervised by: Dr. Muzammil Behzad}
+\IEEEauthorblockA{muzammil.behzad@kfupm.edu.sa \\ King Fahd University of Petroleum and Minerals \\ Dhahran, Saudi Arabia}
+}
+
+\maketitle
+
+\begin{abstract}
+This report presents a fast hybrid super-resolution system which operates on CPUs while maintaining performance within an 8-20 second execution time. The proposed method is attemting to unite core components from GAN and diffusion models to achieve better results at a cost that does not exceed affordable computational needs. The QualityHybridSRModel consists of a fundamental SR backbone which works together with an edge-conditioned refinement module. The research investigates previous prototype results and evaluates our design against current hybrid systems while exploring the question of whether diffusion models outperform GANs in super-resolution tasks. 
+The experimental results together with current benchmark results demonstrate that neither diffusion nor GANs dominate all other methods but our proposed hybrid approach delivers practical results for CPU-based systems.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Super-resolution, GAN, diffusion models, hybrid architectures, CPU optimization, edge conditioning, latency-aware models
+\end{IEEEkeywords}
+
+% =====================================================
+\section{Introduction}
+% =====================================================
+
+\subsection{Background and Significance}
+The single-image super-resolution (SR) process aims to create high-resolution (HR) images from their corresponding low-resolution (LR) versions while maintaining all original details. The recovery of meaningful texture and sharpness becomes more challenging when the input image fails to contain vital details and structural boundaries. ESRGAN and Real-ESRGAN introduced major improvements through GAN-based SR models which learned to generate realistic details that produced clear and visually appealing results. Traditional interpolation methods operate at high speed but they fail to retrieve authentic details in the image. The SR process in diffusion-based models consists of multiple sequential denoising steps which create realistic output while reducing unwanted artifacts.
+
+The GAN-based SR models and diffusion-based SR models need GPU hardware to operate but they use too much computing power to run on CPUs. The research establishes efficient SR solutions which combine the best elements of both methods while minimizing computational needs.
+
+\subsection{Challenges in Current Techniques}
+The current state of SR research has achieved major advancements yet users face multiple difficulties when using existing methods.
+
+\begin{itemize}
+    \item The main disadvantage of GAN-based SR models exists in their ability to create artificial textures and unstable edges during training.
+    \item The majority of proposed hybrid SR models unite deep GAN backbones with extensive diffusion UNets which produces excessive computational requirements.
+    \item The stable output of diffusion-based SR models comes at the expense of extended denoising operations which prolongs the inference process.
+    \item The majority of SR models fail to achieve their best performance when running on CPUs because they do not optimize for time-sensitive operations.
+\end{itemize}
+
+% =====================================================
+\section{Problem Statement}
+The development of an SR model requires a solution which generates high-quality results while remaining within CPU processing limits. The research establishes a hybrid SR system which fulfills three essential requirements.
+
+\begin{itemize}
+    \item The system operates at high speed on standard CPU hardware.
+    \item The system functions between 8 seconds and 20 seconds.
+    \item The system produces better structural details and more defined images than interpolation methods do.
+    \item The system operates at affordable computational costs because it does not implement complex GAN and diffusion model architectures.
+\end{itemize}
+
+% =====================================================
+\section{Objectives}
+The research project consists of three fundamental research objectives which serve as its fundamental framework.
+
+\begin{itemize}
+    \item The development of a lightweight SR architecture which unites core elements from GAN and diffusion models.
+    \item The method depends on edge information as its fundamental structural reference point during its refinement process.
+    \item The research evaluates our final hybrid design against previous versions and examines their design choices.
+    \item The research investigates how our findings affect the ongoing discussion about diffusion models versus GANs in image super-resolution.
+\end{itemize}
+
+% =====================================================
+\section{Scope of Study}
+The research investigates three distinct research domains.
+
+\begin{itemize}
+    \item The system performs $\times4$ super-resolution tasks.
+    \item The system uses small refinement networks.
+    \item The system operates exclusively on CPUs.
+    \item The research investigates real-world field usage instead of performing complete benchmark evaluation.
+\end{itemize}
+
+% =====================================================
+\section{Literature Review}
+% =====================================================
+
+\subsection{Overview of Existing Techniques}
+The diffusion-based SR method generates stable outputs through its denoising process but it requires multiple steps to produce results. GAN-based SR models generate detailed textures but they produce unrealistic artifacts during their operation. SR methods exist in three distinct categories which researchers use to classify them. Hybrid SR models achieve better results through GAN and diffusion method integration but their implementation needs powerful computer systems.
+
+\subsection{Related Work}
+The research paper \textit{Does Diffusion Beat GAN in Image Super Resolution?} The research team performed a systematic assessment between these two methods yet discovered no evidence which showed one method outperformed the other. The combination of GANs produces better results in terms of detail but diffusion models generate more stable outputs with fewer artificial effects. The selection between GANs and diffusion models depends on the specific evaluation criteria and the dataset characteristics.
+
+\subsection{Hybrid Models in Literature}
+Research has developed multiple hybrid SR models which use GANs and diffusion methods together for better results.
+
+\begin{itemize}
+    \item The shared-latent GAN--diffusion models achieve excellent results but their complexity makes them difficult to implement.
+    \item The combination of GAN upsampling with diffusion refinement produces effective results but requires extended processing time.
+    \item Industrial multimodal hybrids produce exceptional results yet their large size prevents them from running on CPUs.
+\end{itemize}
+
+\subsection{Limitations in Existing Approaches}
+The combination of GAN and diffusion elements in hybrid models leads to increased computational requirements which results in:
+
+\begin{itemize}
+    \item The system performs poorly when running on CPU hardware.
+    \item The system requires extensive UNet structures.
+    \item The system requires substantial memory resources for operation.
+    \item The system takes an extended period to complete its operations.
+\end{itemize}
+
+% =====================================================
+\section{Proposed Methodology}
+% =====================================================
+
+\subsection{Summary of Previous Hybrid Attempts}
+The first attempt employed RRDBNet with TinyDiffusionRefiner to produce excellent results yet it did not fulfill the required CPU performance standards. The FastHybridSRModel achieved fast operation but its perceptual quality remained insufficient. The ImprovedSRModel with BalancedRefiner achieved a balanced solution which delivered good quality results and acceptable CPU performance.
+
+\subsection{How This Approach Differs from Prior Hybrids}
+The design process of our method maintains simplicity as its core focus which differentiates it from previous hybrid approaches.
+
+\begin{itemize}
+    \item The single-step refinement process replaces the multi-step diffusion process.
+    \item The system includes a latency-aware forward pass mechanism which prevents time-related issues.
+    \item The method uses edge information as an efficient method to guide its refinement process.
+    \item The refinement stage omits adversarial loss calculations.
+    \item The system architecture uses an optimization method to achieve its peak CPU performance level.
+\end{itemize}
+
+\subsection{Algorithm and Implementation}
+The final pipeline consists of the following steps:
+
+\begin{enumerate}
+    \item The ImprovedSRModel performs an upsampling operation on the input LR image.
+    \item The base SR output undergoes Sobel edge detection to produce edge information.
+    \item The system merges SR output data with information that was extracted from edges.
+    \item The BalancedRefiner generates a small correction value based on the input data.
+    \item The system runs until it reaches its maximum allowed time duration.
+\end{enumerate}
+
+\subsection{Loss Function and Optimization}
+The refiner optimization process uses this particular loss function to operate.
+\[
+\mathcal{L} = \|y - \hat{y}\|_1 + 0.5\|y - \hat{y}\|_2^2.
+\]
+The optimization process achieves stable results through the use of AdamW with gradient clipping.
+
+% =====================================================
+\section{Experimental Design and Evaluation}
+% =====================================================
+
+\subsection{Datasets and Preprocessing}
+The training process utilizes small ImageNet-like datasets. The system extracts $192\times192$ HR patches which get downscaled to $48\times48$ for training purposes. The evaluation process uses a test image named \texttt{original.png} which remains constant throughout the evaluation.
+
+\subsection{Performance Metrics}
+The evaluation process evaluates three performance indicators.
+
+\begin{itemize}
+    \item Evaluation of PSNR and SSIM values.
+    \item Evaluation of sharpness through Laplacian variance measurement.
+    \item Includes LPIPS assessment as an optional assessment.
+    \item The duration which the CPU needs to perform its operations as it is one of the major KPIs of this model.
+\end{itemize}
+
+\subsection{Experiment Setup}
+The system conducts all experiments through CPU hardware instruction execution with limited batch sizes and full thread control.
+
+\subsection{Results}
+The final hybrid model achieves three main accomplishments through its design.
+
+\begin{itemize}
+    \item The model benefits from edge conditioning during its operation.
+    \item The model generates more detailed structures than the fast prototype version.
+    \item The system runs within the predefined 8-20 second CPU time range.
+\end{itemize}
+
+\subsection{Ablation Study}
+The evaluation process includes multiple tests which assess the following conditions:
+
+\begin{itemize}
+    \item The evaluation examines model performance through two conditions which include edge conditioning and its absence.
+    \item The evaluation assesses model performance with and without the refiner.
+    \item The evaluation assesses model performance through different patch size evaluations.
+    \item The evaluation assesses model performance by testing two time constraint scenarios which apply both relaxed and strict conditions.
+\end{itemize}
+
+% =====================================================
+\section{Applications}
+% =====================================================
+The proposed hybrid SR model operates correctly in CPU-bound environments because it manages situations when full diffusion or GAN models exceed computational capacity.
+
+The proposed method finds applications in various fields including:
+
+\begin{itemize}
+    \item The system improves surveillance footage quality to boost its ability to detect faces and objects.
+    \item The system enhances medical imaging data quality through pre-processing operations which operate in facilities that do not have GPU equipment.
+    \item The system enhances satellite and drone image quality because it contains built-in processing functions.
+    \item The system allows standard consumer devices to recover both damaged and compressed images.
+    \item The system delivers high-quality video calls because it runs on energy-efficient hardware systems.
+\end{itemize}
+
+% =====================================================
+\section{Reflection on Hybrid Models and the Diffusion--GAN Debate}
+% =====================================================
+
+The majority of hybrid SR approaches need to perform extensive computational operations. The research demonstrates that systems can implement diffusion-inspired methods by integration without requiring complete diffusion model architecture implementation. The research indicates that SR models need to merge diffusion methods with GAN techniques to achieve their peak performance level.
+
+The research confirms that GANs produce better results in terms of detail but diffusion models generate more stable outputs with fewer artificial effects. The research shows that a hybrid system with compact design produces better visual results while operating within safe CPU processing boundaries.
+
+% =====================================================
+\section{Conclusion and Future Work}
+% =====================================================
+The report developed a relatively efficient hybrid super-resolution system which operates on CPU hardware with performance constraints. The model reaches optimal performance through its combination of a small SR network with an edge-conditioned refiner and its latency-aware execution system.
+
+This work can be building block for implementing perceptual losses and exploring short multi-step refinement methods and perform hardware tests on mobile and embedded platforms.Also, a denoising step introduction would be needed for higher detailed refiner performance.
+
+% =====================================================
+\section{References}
+% =====================================================
+
+\begin{thebibliography}{99}
+
+\bibitem{ref1} Y. LeCun, Y. Bengio, and G. Hinton, "Deep learning," \textit{Nature}, vol. 521, pp. 436--444, 2015.
+
+\bibitem{ref2} I. Goodfellow, Y. Bengio, and A. Courville, \textit{Deep Learning}. MIT Press, 2016.
+
+\bibitem{ref3} A. Krizhevsky, I. Sutskever, and G. Hinton, "ImageNet classification with deep convolutional neural networks," in \textit{NeurIPS}, 2012, pp. 1097--1105.
+
+\bibitem{ref4} K. He, X. Zhang, S. Ren, and J. Sun, "Deep residual learning for image recognition," in \textit{CVPR}, 2016, pp. 770--778.
+
+\bibitem{ref5} D. Kingma and J. Ba, "Adam: A method for stochastic optimization," in \textit{ICLR}, 2015.
+
+\bibitem{ref6} Yandex Research, "Does diffusion beat GAN in image super resolution?", 2024.
+
+\end{thebibliography}
+
+\end{document}
