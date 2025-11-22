@@ -8,6 +8,8 @@ The experimental results together with current benchmark results demonstrate tha
 # Proposed Methodology:
 The first attempt employed RRDBNet with TinyDiffusionRefiner to produce excellent results, yet it did not fulfill the required CPU performance standards. The FastHybridSRModel achieved fast operation, but its perceptual quality remained insufficient. The ImprovedSRModel with BalancedRefiner achieved a balanced solution which delivered good quality results and acceptable CPU performance.
 The design process of our method maintains simplicity as its core focus which differentiates it from previous hybrid approaches.
+<img width="720" height="2059" alt="HighQualityHybridSRModel_Architecture" src="https://github.com/user-attachments/assets/2f8bbd03-da33-4563-a122-1ec26ae417c4" />
+The above shows the architeture of the proposed hybrid model
 
 <img width="1375" height="735" alt="results_summary" src="https://github.com/user-attachments/assets/8d8f9ea8-f738-41bc-b1ad-d4c2551527a7" />
 
