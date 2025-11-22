@@ -10,5 +10,6 @@ The first attempt employed RRDBNet with TinyDiffusionRefiner to produce excellen
 The design process of our method maintains simplicity as its core focus which differentiates it from previous hybrid approaches.
 
 <img width="1375" height="735" alt="results_summary" src="https://github.com/user-attachments/assets/8d8f9ea8-f738-41bc-b1ad-d4c2551527a7" />
-Conclusion and Future Work (1-2 paragraphs)
+
+#Conclusion and Future Work:
 The research developed an efficient hybrid SR system optimized for CPU hardware. The model combines a small SR backbone with an edge-conditioned refiner and latency-aware execution. Future work explores perceptual losses, short multi-step refinement, and embedded platform testing.
